@@ -104,3 +104,39 @@ experience = sim(env,agent,simOpts);
 
 save('workspace.mat')
 
+%%
+
+Obs = experience.Observation.ObservationsForAgent.Data;
+Obs = squeeze(Obs);
+
+Act = experience.Action.InputVelocities.Data;
+Act = squeeze(Act);
+
+
+
+%%
+x = Obs(1,:);
+y = Obs(2,:);
+
+X = [4;7];
+Y = [0;2];
+centers = [X Y];
+radii = [1;1];
+
+figure
+viscircles(centers,radii,'Color','k')
+hold on
+plot(0,0,'*')
+hold on
+plot(10,0,'*')
+hold on
+plot(x,y)
+title('Go to Goal')
+
+figure
+plot(Act(1,:))
+title('Velocity')
+
+figure
+plot(Act(2,:))
+title('Steering')
