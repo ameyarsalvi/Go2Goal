@@ -90,7 +90,7 @@ agentOptions.ResetExperienceBufferBeforeTraining = true;
 
 agent = rlDDPGAgent(actor,critic,agentOptions);
 %%
-maxepisodes = 2000 ;
+maxepisodes = 1000 ;
 maxsteps = 1000;
 trainingOpts = rlTrainingOptions('MaxEpisodes',maxepisodes,'MaxStepsPerEpisode',maxsteps,'Verbose',true,'StopTrainingCriteria','EpisodeCount','StopTrainingValue',750,'Plots',"none");
 
@@ -99,12 +99,13 @@ trainingStats = train(agent,env,trainingOpts);
 
 %%
 
-simOpts = rlSimulationOptions('MaxSteps',2000);
+simOpts = rlSimulationOptions('MaxSteps',1000);
 experience = sim(env,agent,simOpts);
 
 save('workspace.mat')
 
 %%
+
 
 Obs = experience.Observation.ObservationsForAgent.Data;
 Obs = squeeze(Obs);
@@ -140,3 +141,4 @@ title('Velocity')
 figure
 plot(Act(2,:))
 title('Steering')
+%}
