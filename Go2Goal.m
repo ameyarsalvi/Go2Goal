@@ -75,24 +75,24 @@ actor = rlDeterministicActorRepresentation(actorNetwork,observationInfo,actionIn
 
 %%
 
-agentOptions = rlDDPGAgentOptions(...
+agentOptions = rlTD3AgentOptions(...
     'SampleTime',0.01,...
     'TargetSmoothFactor',1e-3,...
     'ExperienceBufferLength',10000,...
     'DiscountFactor',0.99,...
     'MiniBatchSize',64);
 
-agentOptions.NoiseOptions.Variance = [0.8;100]; % sqrt(Var)*sqrt(Ts) = (10%) *(Range) 
-agentOptions.NoiseOptions.VarianceDecayRate = 1e-4;
+agentOptions.ExplorationModel.Variance = [0.8;100]; % sqrt(Var)*sqrt(Ts) = (10%) *(Range) 
+agentOptions.ExplorationModel.VarianceDecayRate = 1e-4;
 agentOptions.ResetExperienceBufferBeforeTraining = true;
 %%
 %agentOptions.ResetExperienceBufferBeforeTraining = false;
 
-agent = rlDDPGAgent(actor,critic,agentOptions);
+agent = rlTD3Agent(actor,critic,agentOptions);
 %%
 maxepisodes = 1000 ;
 maxsteps = 1000;
-trainingOpts = rlTrainingOptions('MaxEpisodes',maxepisodes,'MaxStepsPerEpisode',maxsteps,'Verbose',true,'StopTrainingCriteria','EpisodeCount','StopTrainingValue',750,'Plots',"none");
+trainingOpts = rlTrainingOptions('MaxEpisodes',maxepisodes,'MaxStepsPerEpisode',maxsteps,'Verbose',true,'StopTrainingCriteria','EpisodeCount','StopTrainingValue',1000,'Plots',"none");
 
 %%
 trainingStats = train(agent,env,trainingOpts);
@@ -105,7 +105,7 @@ experience = sim(env,agent,simOpts);
 save('workspace.mat')
 
 %%
-
+%{
 
 Obs = experience.Observation.ObservationsForAgent.Data;
 Obs = squeeze(Obs);
