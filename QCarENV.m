@@ -111,11 +111,11 @@ classdef QCarENV < rl.env.MATLABEnvironment
             reward = Reward_Obstacle_1 + Reward_Obstacle_2 + Reward_Goal ;
             %}
             
-            a = norm([self.new_states(1) self.new_states(2)] -[4 0]).^0.1;
-            b = norm([self.new_states(1) self.new_states(2)]-[7,2]).^0.1;
-            c =(1/norm([self.new_states(1) self.new_states(2)]- [self.Xg(1) self.Xg(2)])).^0.2;
+            %a = norm([self.new_states(1) self.new_states(2)] -[4 0]).^0.1;
+            %b = norm([self.new_states(1) self.new_states(2)]-[7,2]).^0.1;
+            %c =(1/norm([self.new_states(1) self.new_states(2)]- [self.Xg(1) self.Xg(2)])).^0.2;
             
-            reward = c-a-b;
+            reward = reward_func(self.new_states(1),self.new_states(2),self.Xg(1),self.Xg(2));
             
             self.Reward = reward;
             Reward = self.Reward;

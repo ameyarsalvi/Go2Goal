@@ -143,6 +143,6 @@ plot(Act(2,:))
 title('Steering')
 
 saveas(f1,'Trajectory.png')
-saveas(f2,'Velocity.png')
-saveas(f3,'Steering.png')
+saveas(f2,'Error.png')
+saveas(f4,'ActionsTheta.png')
 %}
