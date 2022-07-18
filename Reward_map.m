@@ -25,7 +25,7 @@ for i = 1:n
     end
 end
 
-z = (z1 +z2 +z3);
+z = (10*z1 +2*z2 +2*z3);
 
 
 surf(x,y,z)

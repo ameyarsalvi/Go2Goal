@@ -16,7 +16,7 @@ numActions = actionInfo.Dimension(1);
 
 L = 50; % number of neurons
 statePath = [
-    featureInputLayer(numObservations,'Normalization','none','Name','observation')
+    featureInputLayer(numObservations,'Normalization','rescale-zero-one','Min',-20,'Max',20,'Name','observation')
     fullyConnectedLayer(L,'Name','fc1')
     reluLayer('Name','relu1')
     fullyConnectedLayer(30,'Name','fc2')
@@ -29,7 +29,7 @@ statePath = [
     fullyConnectedLayer(1,'Name','fc9')];
 
 actionPath = [
-    featureInputLayer(numActions,'Normalization','none','Name','action')
+    featureInputLayer(numActions,'Normalization','rescale-zero-one','Min',-20,'Max',20,'Name','action')
     fullyConnectedLayer(30,'Name','fc10')];
 
 criticNetwork = layerGraph(statePath);
@@ -52,7 +52,7 @@ critic = rlQValueRepresentation(criticNetwork,observationInfo,actionInfo,...
 %%
 
 actorNetwork = [
-    featureInputLayer(numObservations,'Normalization','none','Name','observation')
+    featureInputLayer(numObservations,'Normalization','rescale-zero-one','Min',-20,'Max',20,'Name','observation')
     fullyConnectedLayer(L,'Name','fc1')
     reluLayer('Name','relu1')
     fullyConnectedLayer(50,'Name','fc2')
@@ -82,7 +82,7 @@ agentOptions = rlTD3AgentOptions(...
     'DiscountFactor',0.99,...
     'MiniBatchSize',64);
 
-agentOptions.ExplorationModel.Variance = [0.8;100]; % sqrt(Var)*sqrt(Ts) = (10%) *(Range) 
+agentOptions.ExplorationModel.Variance = [0.5;4.5]; % sqrt(Var)*sqrt(Ts) = (10%) *(Range) 
 agentOptions.ExplorationModel.VarianceDecayRate = 1e-4;
 agentOptions.ResetExperienceBufferBeforeTraining = true;
 %%
@@ -92,7 +92,7 @@ agent = rlTD3Agent(actor,critic,agentOptions);
 %%
 maxepisodes = 1000 ;
 maxsteps = 1000;
-trainingOpts = rlTrainingOptions('MaxEpisodes',maxepisodes,'MaxStepsPerEpisode',maxsteps,'Verbose',true,'StopTrainingCriteria','EpisodeCount','StopTrainingValue',1000,'Plots',"none");
+trainingOpts = rlTrainingOptions('MaxEpisodes',maxepisodes,'MaxStepsPerEpisode',maxsteps,'Verbose',true,'StopTrainingCriteria','EpisodeCount','StopTrainingValue',1000,'Plots',"training-progress");
 
 %%
 trainingStats = train(agent,env,trainingOpts);

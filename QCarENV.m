@@ -26,9 +26,9 @@ classdef QCarENV < rl.env.MATLABEnvironment
         % Change class name and constructor name accordingly
         function self = QCarENV()
             % Initialize Observation settings
-            ObservationInfo = rlNumericSpec([5,1]);
+            ObservationInfo = rlNumericSpec([4,1]);
             ObservationInfo.Name = 'Observations for Agent';
-            ObservationInfo.Description = 'x,y,err_x,err_y,step,';
+            ObservationInfo.Description = 'x,y,err_x,err_y';
             
             % Initialize Action settings   
             ActionInfo = rlNumericSpec([2,1],'LowerLimit',[0.1;-0.5] ,'UpperLimit',[5;0.5]);
@@ -51,7 +51,7 @@ classdef QCarENV < rl.env.MATLABEnvironment
             err_x = sqrt((self.new_states(1) - self.Xg(1)).^2);
             err_y = sqrt((self.new_states(2) - self.Xg(2)).^2);
             
-            Observation = [self.new_states(1);self.new_states(2);err_x;err_y;self.steps];
+            Observation = [self.new_states(1);self.new_states(2);err_x;err_y];
             
             % Get reward
             Reward = getReward(self);
@@ -64,7 +64,7 @@ classdef QCarENV < rl.env.MATLABEnvironment
             
             b = [self.new_states(1) self.new_states(2)];
             a = [self.Xg(1) self.Xg(2)];
-            IsDone = norm(a-b) < 0.01;
+            IsDone = norm(a-b) < 0.01 ||norm(a-b)>30 ;
             self.IsDone = IsDone;
 
         end
@@ -78,7 +78,7 @@ classdef QCarENV < rl.env.MATLABEnvironment
             err_x = sqrt((self.prev_states(1) - self.Xg(1)).^2);
             err_y = sqrt((self.prev_states(2) - self.Xg(2)).^2);
             
-            Observation = [self.prev_states(1);self.prev_states(2);err_x;err_y;self.steps];
+            Observation = [self.prev_states(1);self.prev_states(2);err_x;err_y];
             InitialObservation = Observation;
             self.episodes = self.episodes +1;
 

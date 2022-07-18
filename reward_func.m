@@ -7,5 +7,6 @@ function R = reward_func(x,y,x_g,y_g)
 
     z3 = -(1./(((x-7).^2 + (y-2).^2)))^0.2;
 
-    R = (z1 +z2 +z3);
+    %R = (10*z1 +2*z2 +2*z3);
+    R = (10*z1 +0*z2 +0*z3);
 end
